@@ -10,8 +10,8 @@ export function startREPL() {
     readline.prompt();
     readline.on("line", line => {
         const input = cleanInput(line);
-
-        commands[input[0]]?.callback(state);
+        const [command, ...userInput] = input;
+        commands[command]?.callback(state, ...userInput);
         readline.prompt();
 
     });
