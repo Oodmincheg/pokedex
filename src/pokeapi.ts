@@ -7,50 +7,35 @@ export class PokeAPI {
   #cacheClient: Cache;
 
   constructor() {
-
     this.#cacheClient = new Cache(5000);
+  }
+
+  async #cachedFetch<T>(url: string, label: string): Promise<T> {
+    const cached = this.#cacheClient.get<T>(url);
+    if (cached) {
+      console.log(`${label} was read from cache`);
+      return cached;
+    }
+    const res = await fetch(url);
+    const value = await res.json();
+    this.#cacheClient.add(url, value);
+    return value;
   }
 
   async fetchLocations(pageURL?: string): Promise<ShallowLocations> {
     const url = pageURL || `${PokeAPI.baseURL}${PokeAPI.locationPath}`;
-    const cached = this.#cacheClient.get<ShallowLocations>(url);
-    if(!!cached) { 
-        console.log('shallow locations were read from cache');
-        return cached;
-    }
-
-    const res = await fetch(url);
-    const value = res.json();
-    this.#cacheClient.add(url, value);
-    return value;
-
+    return this.#cachedFetch<ShallowLocations>(url, 'shallow locations');
   }
 
   async fetchLocation(locationName: string): Promise<Location> {
     const url = `${PokeAPI.baseURL}${PokeAPI.locationPath}/${locationName}`;
-    const cached = this.#cacheClient.get<Location>(url);
-    if(!!cached) { 
-        console.log('location was read from cache');
-        return cached;
-    }
-    const res = await fetch(url);
-    const value = res.json();
-    this.#cacheClient.add(url, value);
-    return value;
+    return this.#cachedFetch<Location>(url, 'location');
   }
 
-  async fetchPokemon(pokemonName:string): Promise<Pokemon> {
-      const url = `${PokeAPI.baseURL}${PokeAPI.pokemonPath}/${pokemonName}`;
-      const cached = this.#cacheClient.get<Pokemon>(url);
-      if(!!cached) { 
-        console.log('pokemon was read from cache');
-        return cached;
-      }
-      const res = await fetch(url);
-      const value = res.json();
-      this.#cacheClient.add(url, value);
-      return value;
-  };
+  async fetchPokemon(pokemonName: string): Promise<Pokemon> {
+    const url = `${PokeAPI.baseURL}${PokeAPI.pokemonPath}/${pokemonName}`;
+    return this.#cachedFetch<Pokemon>(url, 'pokemon');
+  }
 }
 
 export type ShallowLocations = {
