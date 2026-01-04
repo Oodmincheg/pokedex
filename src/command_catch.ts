@@ -18,5 +18,6 @@ export async function command_catch(state: State, ...args: string[]) {
     if(shouldTrigger(pokemon.base_experience)) {
         state.pokeDex[pokemon.name] = pokemon;
         console.log(`${pokemon.name} was caught!`);
+        console.log('You may now inspect it with the inspect command.');
     };
 }

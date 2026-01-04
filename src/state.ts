@@ -6,6 +6,7 @@ import { command_map } from "./command_map.js";
 import { command_mapb } from "./command_mapb.js";
 import { command_catch } from "./command_catch.js";
 import { command_inspect } from "./command_inspect.js";
+import { command_pokedex } from "./command_pokedex.js";
 import { PokeAPI, Pokemon } from "./pokeapi.js";
 
 export type CLICommand = {
@@ -61,6 +62,11 @@ export function getCommands(): CLICommands {
         name: "inspect",
         description: "Displays details of a caught pokemon.",
         callback: command_inspect,
+    },
+    pokedex: {
+        name: "pokedex",
+        description: "Lists all caught pokemon.",
+        callback: command_pokedex,
     },
   };
 }
