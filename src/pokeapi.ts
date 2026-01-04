@@ -57,4 +57,21 @@ type PokemonEncounter = {
 export type Pokemon = {
     name: string;
     base_experience: number;
+    height: number;
+    weight: number;
+    stats: PokemonStat[];
+    types: PokemonType[];
+};
+
+type PokemonStat = {
+    base_stat: number;
+    stat: {
+        name: string;
+    };
+};
+
+type PokemonType = {
+    type: {
+        name: string;
+    };
 };
