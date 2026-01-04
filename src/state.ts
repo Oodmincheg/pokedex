@@ -5,7 +5,7 @@ import { command_help } from "./commant_help.js";
 import { command_map } from "./command_map.js";
 import { command_mapb } from "./command_mapb.js";
 import { command_catch } from "./command_catch.js";
-import { PokeAPI } from "./pokeapi.js";
+import { PokeAPI, Pokemon } from "./pokeapi.js";
 
 export type CLICommand = {
     name: string
@@ -21,6 +21,7 @@ export type State = {
     nextLocationsURL: string
     readline: Interface
     commands: CLICommands
+    pokeDex: Record<string, Pokemon>
 };
 
 export function getCommands(): CLICommands {
@@ -51,8 +52,8 @@ export function getCommands(): CLICommands {
         callback: command_explore,
     },
     catch: {
-        name: "explore",
-        description: "Displays the names of pokemons for location with a given name.",
+        name: "catch",
+        description: "Attempts to catch a pokemon by name.",
         callback: command_catch,
     },
   };
@@ -71,6 +72,7 @@ export function initState(): State {
         nextLocationsURL: '',
         prevLocationsURL: '',
         readline: createInterface(options),
-        commands: getCommands()
+        commands: getCommands(),
+        pokeDex: {}
     }
 }

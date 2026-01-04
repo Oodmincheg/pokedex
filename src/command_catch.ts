@@ -1,4 +1,3 @@
-import { Pokemon } from "./pokeapi.js";
 import type { State } from "./state.js";
 
 const getScaledProbability = (x: number) => {
@@ -11,15 +10,13 @@ const getScaledProbability = (x: number) => {
 
 const shouldTrigger = (x: number) => Math.random() * 100 < getScaledProbability(x);
 
-const pokeDex: Record<string, Pokemon> = {};
-
 export async function command_catch(state: State, ...args: string[]) {
     const name = args[0];
     console.log(`Throwing a Pokeball at ${name}...`);
     const pokemon = await state.pokeApi.fetchPokemon(name);
 
     if(shouldTrigger(pokemon.base_experience)) {
-        pokeDex[pokemon.name] = pokemon;
-        console.log(`${pokemon.name} was catched.`);
+        state.pokeDex[pokemon.name] = pokemon;
+        console.log(`${pokemon.name} was caught!`);
     };
 }
