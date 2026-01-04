@@ -3,7 +3,7 @@ import { Cache } from './pokecache.js';
 export class PokeAPI {
   private static readonly baseURL = "https://pokeapi.co/api/v2";
   private static readonly locationPath = '/location-area';
-  private static readonly locationNamePath = '/location';
+  private static readonly pokemonPath = '/pokemon';
   #cacheClient: Cache;
 
   constructor() {
@@ -38,6 +38,19 @@ export class PokeAPI {
     this.#cacheClient.add(url, value);
     return value;
   }
+
+  async fetchPokemon(pokemonName:string): Promise<Pokemon> {
+      const url = `${PokeAPI.baseURL}${PokeAPI.pokemonPath}/${pokemonName}`;
+      const cached = this.#cacheClient.get<Pokemon>(url);
+      if(!!cached) { 
+        console.log('pokemon was read from cache');
+        return cached;
+      }
+      const res = await fetch(url);
+      const value = res.json();
+      this.#cacheClient.add(url, value);
+      return value;
+  };
 }
 
 export type ShallowLocations = {
@@ -56,6 +69,7 @@ type PokemonEncounter = {
     pokemon: Pokemon;
 };
 
-type Pokemon = {
+export type Pokemon = {
     name: string;
+    base_experience: number;
 };

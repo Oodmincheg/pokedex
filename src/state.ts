@@ -4,6 +4,7 @@ import { command_explore } from "./command_explore.js";
 import { command_help } from "./commant_help.js";
 import { command_map } from "./command_map.js";
 import { command_mapb } from "./command_mapb.js";
+import { command_catch } from "./command_catch.js";
 import { PokeAPI } from "./pokeapi.js";
 
 export type CLICommand = {
@@ -48,6 +49,11 @@ export function getCommands(): CLICommands {
         name: "explore",
         description: "Displays the names of pokemons for location with a given name.",
         callback: command_explore,
+    },
+    catch: {
+        name: "explore",
+        description: "Displays the names of pokemons for location with a given name.",
+        callback: command_catch,
     },
   };
 }
